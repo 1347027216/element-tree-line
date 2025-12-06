@@ -39,6 +39,10 @@ export default defineComponent({
             type: Boolean,
             default: true,
         },
+        expandIconWidth: {
+            type: Number,
+            default: 24,
+        },
     },
     setup(props) {
         // 构建 lastnodeArr：记录每一层是否为同级最后一个
@@ -132,7 +136,11 @@ export default defineComponent({
                             'last-node-isLeaf-line':
                                 lastnodeArr[i] && props.node.level - 1 === i,
                         },
-                        style: { left: `${props.indent * i}px` },
+                        style: {
+                            left: `${
+                                props.indent * i + props.expandIconWidth / 2
+                            }px`,
+                        },
                     })
                 );
             }
@@ -143,9 +151,14 @@ export default defineComponent({
                     : h('span', {
                           class: 'element-tree-node-line-hor',
                           style: {
-                              width: `${props.node.isLeaf ? 24 : 8}px`,
+                              width: `${
+                                  props.node.isLeaf
+                                      ? props.expandIconWidth
+                                      : props.expandIconWidth / 2
+                              }px`,
                               left: `${
-                                  (props.node.level - 1) * props.indent
+                                  (props.node.level - 1) * props.indent +
+                                  props.expandIconWidth / 2
                               }px`,
                           },
                       });
