@@ -24,6 +24,10 @@ function getComConfig(h) {
                 type: Boolean,
                 default: true,
             },
+            showRootNodeLabelLine: {
+                type: Boolean,
+                default: true,
+            },
         },
         render(createElement) {
             const $createElement = h || createElement;
@@ -106,6 +110,10 @@ function getComConfig(h) {
                 if (lastnodeArr[i] && this.node.level - 1 !== i) {
                     continue;
                 }
+                // Skip root level line when showRootNodeLabelLine is false
+                if (i === 0 && !this.showRootNodeLabelLine) {
+                    continue;
+                }
                 lineNodes.push(
                     $createElement('span', {
                         class: {
@@ -117,20 +125,23 @@ function getComConfig(h) {
                     })
                 );
             }
+            // Create horizontal line, but skip for root level nodes when showRootNodeLabelLine is false
+            const horLineNode =
+                this.node.level === 1 && !this.showRootNodeLabelLine
+                    ? null
+                    : $createElement('span', {
+                          class: 'element-tree-node-line-hor',
+                          style: {
+                              width: (this.node.isLeaf ? 24 : 8) + 'px',
+                              left: (this.node.level - 1) * this.indent + 'px',
+                          },
+                      });
             return $createElement(
                 'span',
                 {
                     class: 'element-tree-node-label-wrapper',
                 },
-                [labelNodes].concat(lineNodes).concat([
-                    $createElement('span', {
-                        class: 'element-tree-node-line-hor',
-                        style: {
-                            width: (this.node.isLeaf ? 24 : 8) + 'px',
-                            left: (this.node.level - 1) * this.indent + 'px',
-                        },
-                    }),
-                ])
+                [labelNodes].concat(lineNodes).concat([horLineNode])
             );
         },
         methods: {

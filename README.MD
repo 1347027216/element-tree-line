@@ -420,6 +420,7 @@ export default {
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | :----: | ------ |
 | node          | 由[el-tree 的 default slot](https://element-plus.gitee.io/zh-CN/component/tree.html#slots) 提供的作用域参数 node，**必填**。                                              | object  |   -    | -      |
 | showLabelLine | 是否显示 label 的横线                                                                                                                                                     | boolean |   -    | false  |
+| showRootNodeLabelLine | 是否显示左侧第一层的结构线，设置为 false 时只显示当前树和子树的层级引导线                                                                                                    | boolean |   -    | true   |
 | treeData      | 对应[element-plus 的 el-tree-v2](https://element-plus.org/zh-CN/component/tree-v2.html#attributes) 的 data，**当用在 element-plus 的 el-tree-v2 时，treeData 是必填的**。 | array   |   -    | -      |
 | indent        | 相邻级节点间的水平缩进，单位为像素 ; 对应[el-tree 的 indent](https://element-plus.gitee.io/zh-CN/component/tree.html#attributes)。                                        | number  |   -    | 16     |
 
