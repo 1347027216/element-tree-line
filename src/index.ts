@@ -39,6 +39,11 @@ export default defineComponent({
             type: Boolean,
             default: true,
         },
+        // Width of the expand/collapse icon in pixels, used to center guide lines on the icon
+        expandIconWidth: {
+            type: Number,
+            default: 24,
+        },
     },
     setup(props) {
         // 构建 lastnodeArr：记录每一层是否为同级最后一个
@@ -94,6 +99,12 @@ export default defineComponent({
             const nodeLabelSlot = slots['node-label'];
             const afterNodeLabelSlot = slots['after-node-label'];
 
+            // Calculate half of expand icon width for centering guide lines
+            const halfExpandIconWidth = props.expandIconWidth / 2;
+            // Helper function to calculate horizontal position for guide lines at a given level
+            const getLineLeft = (level: number) =>
+                props.indent * level + halfExpandIconWidth;
+
             let labelNodes;
             if (defaultSlot) {
                 labelNodes = defaultSlot({
@@ -132,7 +143,9 @@ export default defineComponent({
                             'last-node-isLeaf-line':
                                 lastnodeArr[i] && props.node.level - 1 === i,
                         },
-                        style: { left: `${props.indent * i}px` },
+                        style: {
+                            left: `${getLineLeft(i)}px`,
+                        },
                     })
                 );
             }
@@ -143,10 +156,12 @@ export default defineComponent({
                     : h('span', {
                           class: 'element-tree-node-line-hor',
                           style: {
-                              width: `${props.node.isLeaf ? 24 : 8}px`,
-                              left: `${
-                                  (props.node.level - 1) * props.indent
+                              width: `${
+                                  props.node.isLeaf
+                                      ? props.expandIconWidth
+                                      : halfExpandIconWidth
                               }px`,
+                              left: `${getLineLeft(props.node.level - 1)}px`,
                           },
                       });
 
