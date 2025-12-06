@@ -141,7 +141,9 @@ function getComConfig(h) {
                 {
                     class: 'element-tree-node-label-wrapper',
                 },
-                [labelNodes].concat(lineNodes).concat([horLineNode])
+                [labelNodes]
+                    .concat(lineNodes)
+                    .concat(horLineNode ? [horLineNode] : [])
             );
         },
         methods: {
