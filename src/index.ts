@@ -39,6 +39,7 @@ export default defineComponent({
             type: Boolean,
             default: true,
         },
+        // Width of the expand/collapse icon in pixels, used to center guide lines on the icon
         expandIconWidth: {
             type: Number,
             default: 24,
@@ -98,6 +99,12 @@ export default defineComponent({
             const nodeLabelSlot = slots['node-label'];
             const afterNodeLabelSlot = slots['after-node-label'];
 
+            // Calculate half of expand icon width for centering guide lines
+            const halfExpandIconWidth = props.expandIconWidth / 2;
+            // Helper function to calculate horizontal position for guide lines at a given level
+            const getLineLeft = (level: number) =>
+                props.indent * level + halfExpandIconWidth;
+
             let labelNodes;
             if (defaultSlot) {
                 labelNodes = defaultSlot({
@@ -137,9 +144,7 @@ export default defineComponent({
                                 lastnodeArr[i] && props.node.level - 1 === i,
                         },
                         style: {
-                            left: `${
-                                props.indent * i + props.expandIconWidth / 2
-                            }px`,
+                            left: `${getLineLeft(i)}px`,
                         },
                     })
                 );
@@ -154,12 +159,9 @@ export default defineComponent({
                               width: `${
                                   props.node.isLeaf
                                       ? props.expandIconWidth
-                                      : props.expandIconWidth / 2
+                                      : halfExpandIconWidth
                               }px`,
-                              left: `${
-                                  (props.node.level - 1) * props.indent +
-                                  props.expandIconWidth / 2
-                              }px`,
+                              left: `${getLineLeft(props.node.level - 1)}px`,
                           },
                       });
 
