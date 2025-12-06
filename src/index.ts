@@ -160,18 +160,16 @@ function getComConfig(h?: CreateElement): ComponentConfig {
                     // el-tree-v2的第一层node是没有parent的，必需 treeData 创建一个parent
                     if (!this.treeData || !Array.isArray(this.treeData)) {
                         throw Error(
-                            'if you using el-tree-v2 (Virtualized Tree) of element-plus,element-tree-line required data.'
+                            'If you are using el-tree-v2 (Virtualized Tree) of element-plus, element-tree-line requires data.'
                         );
                     }
                     parentNode = {
-                        children: Array.isArray(this.treeData)
-                            ? this.treeData.map((item: TreeData) => {
-                                  return {
-                                      ...item,
-                                      key: item.id,
-                                  } as unknown as TreeNode;
-                              })
-                            : [],
+                        children: this.treeData.map((item: TreeData) => {
+                            return {
+                                ...item,
+                                key: item.id,
+                            } as unknown as TreeNode;
+                        }),
                         level: 0,
                         key: 'node-0',
                         parent: null,
