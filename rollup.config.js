@@ -8,6 +8,7 @@ import glob from 'glob';
 import fsExtra from 'fs-extra';
 import { getBabelOutputPlugin } from '@rollup/plugin-babel';
 import { terser } from 'rollup-plugin-terser';
+import typescript from '@rollup/plugin-typescript';
 const config = {
     outputDir: 'dist',
     sourceDir: 'src',
@@ -22,15 +23,11 @@ export default new Promise((resolve, reject) => {
 })
     .then(() => {
         return new Promise((resolve, reject) => {
-            glob(
-                `${config.sourceDir}/**/**(.scss|.d.ts)`,
-                {},
-                function (er, files) {
-                    if (!er) {
-                        resolve(files);
-                    }
+            glob(`${config.sourceDir}/**/*.scss`, {}, function (er, files) {
+                if (!er) {
+                    resolve(files);
                 }
-            );
+            });
         }).then((files) => {
             files.forEach((filepath) => {
                 console.log(
@@ -50,7 +47,7 @@ export default new Promise((resolve, reject) => {
     })
     .then(() => {
         return {
-            input: './src/index.js',
+            input: './src/index.ts',
             // 输出两种模式
             output: [
                 {
@@ -75,7 +72,7 @@ export default new Promise((resolve, reject) => {
                                     },
                                 ],
                             ],
-                            extensions: ['.jsx', '.js'],
+                            extensions: ['.jsx', '.js', '.tsx', '.ts'],
                         }),
                         terser(),
                     ],
@@ -89,6 +86,11 @@ export default new Promise((resolve, reject) => {
             plugins: [
                 resolve(),
                 commonjs(),
+                typescript({
+                    tsconfig: './tsconfig.json',
+                    declaration: true,
+                    declarationDir: './dist',
+                }),
                 // // 将所有的scss编译到一个css文件
                 scss({
                     output: `${config.outputDir}/style.css`,
