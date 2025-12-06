@@ -137,6 +137,8 @@ function getComConfig(h) {
                 );
             }
             // Create horizontal line, but skip for root level nodes when showRootNodeLabelLine is false
+            // For non-leaf nodes, the horizontal line width is 1/3 of expandIconWidth to create
+            // a short connector before the expand icon. For leaf nodes, it extends the full width.
             const horLineNode =
                 this.node.level === 1 && !this.showRootNodeLabelLine
                     ? null
