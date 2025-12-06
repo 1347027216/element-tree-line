@@ -102,8 +102,11 @@ export default defineComponent({
             // Calculate half of expand icon width for centering guide lines
             const halfExpandIconWidth = props.expandIconWidth / 2;
             // Helper function to calculate horizontal position for guide lines at a given level
+            // Lines are positioned relative to the current node's content area, which has padding-left
+            // based on the node's level. We need to account for this offset.
             const getLineLeft = (level: number) =>
-                props.indent * level + halfExpandIconWidth;
+                props.indent * (level - props.node.level + 1) +
+                halfExpandIconWidth;
 
             let labelNodes;
             if (defaultSlot) {
