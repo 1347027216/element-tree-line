@@ -1,6 +1,7 @@
 $--element-tree-line-color: #dcdfe6 !default;
 $--element-tree-line-style: dashed !default;
 $--element-tree-line-width: 1px !default;
+$--element-tree-expand-icon-width: 24px !default;
 // 添加 el-tree-node__conten 默认没有的 position
 .el-tree .el-tree-node__content {
     position: relative;

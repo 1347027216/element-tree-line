@@ -20,6 +20,12 @@ function getComConfig(h) {
                     return 16;
                 },
             },
+            expandIconWidth: {
+                type: Number,
+                default() {
+                    return 24;
+                },
+            },
             showLabelLine: {
                 type: Boolean,
                 default: true,
@@ -121,19 +127,32 @@ function getComConfig(h) {
                             'last-node-isLeaf-line':
                                 lastnodeArr[i] && this.node.level - 1 === i,
                         },
-                        style: { left: this.indent * i + 'px' },
+                        style: {
+                            left:
+                                this.indent * i +
+                                this.expandIconWidth / 2 +
+                                'px',
+                        },
                     })
                 );
             }
             // Create horizontal line, but skip for root level nodes when showRootNodeLabelLine is false
+            // For non-leaf nodes, the horizontal line width is 1/3 of expandIconWidth to create
+            // a short connector before the expand icon. For leaf nodes, it extends the full width.
             const horLineNode =
                 this.node.level === 1 && !this.showRootNodeLabelLine
                     ? null
                     : $createElement('span', {
                           class: 'element-tree-node-line-hor',
                           style: {
-                              width: (this.node.isLeaf ? 24 : 8) + 'px',
-                              left: (this.node.level - 1) * this.indent + 'px',
+                              width:
+                                  (this.node.isLeaf
+                                      ? this.expandIconWidth
+                                      : this.expandIconWidth / 3) + 'px',
+                              left:
+                                  (this.node.level - 1) * this.indent +
+                                  this.expandIconWidth / 2 +
+                                  'px',
                           },
                       });
             return $createElement(
