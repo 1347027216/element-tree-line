@@ -20,6 +20,12 @@ function getComConfig(h) {
                     return 16;
                 },
             },
+            expandIconWidth: {
+                type: Number,
+                default() {
+                    return 24;
+                },
+            },
             showLabelLine: {
                 type: Boolean,
                 default: true,
@@ -121,7 +127,12 @@ function getComConfig(h) {
                             'last-node-isLeaf-line':
                                 lastnodeArr[i] && this.node.level - 1 === i,
                         },
-                        style: { left: this.indent * i + 'px' },
+                        style: {
+                            left:
+                                this.indent * i +
+                                this.expandIconWidth / 2 +
+                                'px',
+                        },
                     })
                 );
             }
@@ -132,8 +143,14 @@ function getComConfig(h) {
                     : $createElement('span', {
                           class: 'element-tree-node-line-hor',
                           style: {
-                              width: (this.node.isLeaf ? 24 : 8) + 'px',
-                              left: (this.node.level - 1) * this.indent + 'px',
+                              width:
+                                  (this.node.isLeaf
+                                      ? this.expandIconWidth
+                                      : this.expandIconWidth / 3) + 'px',
+                              left:
+                                  (this.node.level - 1) * this.indent +
+                                  this.expandIconWidth / 2 +
+                                  'px',
                           },
                       });
             return $createElement(
